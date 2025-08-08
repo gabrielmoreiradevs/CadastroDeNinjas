@@ -10,10 +10,10 @@
 <ul>
   <li>Cadastro de ninjas com:
     <ul>
-      <li>Id</li>
       <li>Nome</li>
       <li>Idade</li>
       <li>E-mail</li>
+      <li>Rank</li>
     </ul>
   </li>
   <li>Cadastro de missões com:
