@@ -25,13 +25,17 @@ public class NinjaModel {
     @Id
     //Passando a estrategia de definir a sequencia dos ID's
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "nome")
     private String nome;
 
-    @Column(unique = true)
+
+    @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "idade")
     private int idade;
 
     //@ManyToOne Um ninja tera apenas uma unica missao!
