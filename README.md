@@ -99,7 +99,7 @@ src/
 </ul>
 
 <h2>📚 Curso</h2>
-<p>Projeto baseado nas aulas do curso <strong>Batismo de Spring Boot</strong> do Fiasco (ou nome correto do autor).</p>
+<p>Projeto baseado nas aulas do curso <strong>Batismo de Spring Boot</strong> do Fiasco</p>
 
 <h2>🧑‍💻 Autor</h2>
 <p>
