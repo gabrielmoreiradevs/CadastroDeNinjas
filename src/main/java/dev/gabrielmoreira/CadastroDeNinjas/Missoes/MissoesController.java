@@ -2,16 +2,24 @@ package dev.gabrielmoreira.CadastroDeNinjas.Missoes;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //Aqui definimos que aqui ira ir todas as rotas de nossa API
 @RestController
 
 //Aqui mapearemos todas as nossas api
-@RequestMapping("missoes")
+@RequestMapping("/missoes")
 public class MissoesController {
 
+    private MissoesService missoesService;
+
+    public MissoesController(MissoesService missoesService) {
+        this.missoesService = missoesService;
+    }
+
     @GetMapping("/listar")
-    public String listarMissoes(){
-        return "Lista de missoes";
+    public List<MissoesModel> listarMissoes(){
+        return missoesService.listarMissoes();
     }
 
     @PostMapping("/criar")
