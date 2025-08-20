@@ -24,4 +24,24 @@ public class NinjaService {
         Optional<NinjaModel> ninjaModel = ninjaRepository.findById(id);
         return ninjaModel.orElse(null);
     }
+
+    //Criar novo ninja
+    public NinjaModel criarNinja(NinjaModel ninjaModel){
+        return ninjaRepository.save(ninjaModel);
+    }
+
+    //Deletar por ID
+    public void deletarNinjaPorID(Long id){
+        ninjaRepository.deleteById(id);
+    }
+
+    //Alterar por Id
+    public NinjaModel alterarNinjaPorId(Long id, NinjaModel ninjaModel){
+        if(ninjaRepository.existsById(id)){
+            ninjaModel.setId(id);
+            return ninjaRepository.save(ninjaModel);
+        }
+        return null;
+    }
+
 }

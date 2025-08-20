@@ -16,8 +16,8 @@ public class NinjaController {
     // CRUD
     // Adicionar Ninja (CREATE)
     @PostMapping("/criar")
-    public String criar(){
-        return "Ninja criada com sucesso!";
+    public NinjaModel criarNinja(@RequestBody NinjaModel ninjaModel){
+        return ninjaService.criarNinja(ninjaModel);
     }
 
     // Mostrar todos os Ninjas (READ)
@@ -33,15 +33,15 @@ public class NinjaController {
     }
 
     // Alterar dados dos Ninjas (UPDATE)
-    @PutMapping("/alterarID")
-    public String alterarNinjaPorID(){
-        return "Ninja alterado com sucesso!";
+    @PutMapping("/alterar/{id}")
+    public NinjaModel alterarNinjaPorID(@PathVariable Long id, @RequestBody NinjaModel ninjaModel){
+        return ninjaService.alterarNinjaPorId(id, ninjaModel);
     }
 
     // Deletar Ninja (DELETE)
-    @DeleteMapping("/deletarID")
-    public String deletarNinjaPorID(){
-        return "Ninja deletado com sucesso!";
+    @DeleteMapping("/deletar/{id}")
+    public void deletarNinjaPorID(@PathVariable Long id){
+        ninjaService.deletarNinjaPorID(id);
     }
 
 }
