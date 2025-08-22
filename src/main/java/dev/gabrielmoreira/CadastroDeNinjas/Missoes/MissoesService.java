@@ -4,27 +4,48 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MissoesService {
 
     private MissoesRepository missoesRepository;
+    private MissoesMapper missoesMapper;
 
-    public MissoesService(MissoesRepository missoesRepository) {
+    public MissoesService(MissoesRepository missoesRepository, MissoesMapper missoesMapper) {
         this.missoesRepository = missoesRepository;
+        this.missoesMapper = missoesMapper;
     }
 
-    public List<MissoesModel> listarMissoes(){
-        return missoesRepository.findAll();
+    public List<MissoesDTO> listarMissoes(){
+        List<MissoesModel> missoes = missoesRepository.findAll();
+        return missoes.stream()
+                .map(missoesMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public MissoesModel listarMissoesPorID(Long idMissoes){
+    public MissoesDTO listarMissoesPorID(Long idMissoes){
         Optional<MissoesModel> missoesModel = missoesRepository.findById(idMissoes);
-        return missoesModel.orElse(null);
+        return missoesModel.map(missoesMapper::map).orElse(null);
     }
 
-    public MissoesModel criarMissoes(MissoesModel missoesModel){
-        return missoesRepository.save(missoesModel);
+    public MissoesDTO criarMissoes(MissoesDTO missoesDTO){
+        MissoesModel missoes = missoesMapper.map(missoesDTO);
+        missoes =  missoesRepository.save(missoes);
+        return missoesMapper.map(missoes);
+    }
+
+    public MissoesDTO alterarMissoesPorId(Long idMissoes, MissoesDTO missoesDTO){
+        Optional<MissoesModel> missoesModel = missoesRepository.findById(idMissoes);
+
+        if(missoesModel.isPresent()){
+            MissoesModel missoes = missoesMapper.map(missoesDTO);
+            missoes.setId(idMissoes);
+
+            MissoesModel missoesSalva = missoesRepository.save(missoes);
+            return missoesMapper.map(missoesSalva);
+        }
+        return null;
     }
 
     public void deletarMissoesPorId(Long idMissoes){ missoesRepository.deleteById(idMissoes); }
