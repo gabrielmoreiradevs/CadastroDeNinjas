@@ -31,7 +31,6 @@ public class NinjaModel {
     @Column(name = "nome")
     private String nome;
 
-
     @Column(name = "email", unique = true)
     private String email;
 
@@ -40,6 +39,9 @@ public class NinjaModel {
 
     @Column(name = "idade")
     private int idade;
+
+    @Column(name = "rank")
+    private String rank;
 
     //@ManyToOne Um ninja tera apenas uma unica missao!
     @ManyToOne
