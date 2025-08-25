@@ -1,5 +1,10 @@
 package dev.gabrielmoreira.CadastroDeNinjas.Missoes;
 
+import dev.gabrielmoreira.CadastroDeNinjas.Ninjas.NinjaDTO;
+import dev.gabrielmoreira.CadastroDeNinjas.Ninjas.NinjaRepository;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,33 +16,51 @@ import java.util.List;
 @RequestMapping("/missoes")
 public class MissoesController {
 
+    private final NinjaRepository ninjaRepository;
+    private final MissoesRepository missoesRepository;
     private MissoesService missoesService;
 
-    public MissoesController(MissoesService missoesService) {
+    public MissoesController(MissoesService missoesService, NinjaRepository ninjaRepository, MissoesRepository missoesRepository) {
         this.missoesService = missoesService;
+        this.ninjaRepository = ninjaRepository;
+        this.missoesRepository = missoesRepository;
     }
 
     @GetMapping("/listar")
-    public List<MissoesDTO> listarMissoes(){
-        return missoesService.listarMissoes();
+    public ResponseEntity<List<MissoesDTO>> listarMissoes(){
+        return ResponseEntity.ok(missoesService.listarMissoes());
     }
 
     @GetMapping("/listar/{id}")
-    public MissoesDTO listarMissoes(@PathVariable Long id){
-        return missoesService.listarMissoesPorID(id);
+    public ResponseEntity<MissoesDTO> listarMissoes(@PathVariable Long id){
+
+        if( ninjaRepository.existsById(id) ){
+            return ResponseEntity.ok().body(missoesService.listarMissoesPorID(id));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/criar")
-    public MissoesDTO criarMissoes(@RequestBody MissoesDTO missoesModel){
-        return missoesService.criarMissoes(missoesModel);
+    public ResponseEntity<String> criarMissoes(@RequestBody MissoesDTO missoesModel){
+        missoesService.criarMissoes(missoesModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Missão Criada com sucesso!");
     }
 
     @PutMapping("/alterar/{id}")
-    public MissoesDTO alterarMissaoID(@PathVariable Long idMissoes, @RequestBody MissoesDTO missoesModel){
-        return missoesService.alterarMissoesPorId(idMissoes,missoesModel);
+    public ResponseEntity<MissoesDTO> alterarMissaoID(@PathVariable Long idMissoes, @RequestBody MissoesDTO missoesModel){
+        if( missoesRepository.existsById(idMissoes) ){
+            return ResponseEntity.status(HttpStatus.OK).body(missoesService.alterarMissoesPorId(idMissoes,missoesModel));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/deletar/{id}")
-    public void deletarMissaoID(@PathVariable Long id){missoesService.deletarMissoesPorId(id);}
+    public ResponseEntity<String> deletarMissaoID(@PathVariable Long id){
+        if( missoesRepository.existsById(id) ){
+            missoesService.deletarMissoesPorId(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Missão deletada com sucesso! "+id+" (ID)");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Missão de id "+id+" não existe!");
+    }
 
 }
