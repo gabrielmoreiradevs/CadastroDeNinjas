@@ -46,10 +46,11 @@ public class NinjaController {
 
     // Alterar dados dos Ninjas (UPDATE)
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<String> alterarNinjaPorID(@PathVariable Long id, @RequestBody NinjaDTO ninjaModel){
-        if( ninjaRepository.existsById(id) ){
-            ninjaService.alterarNinjaPorId(id, ninjaModel);
-            return ResponseEntity.ok("Ninja Alterado com sucesso!");
+    public ResponseEntity<?> alterarNinjaPorID(@PathVariable Long id, @RequestBody NinjaDTO ninjaModel){
+        NinjaDTO ninja = ninjaService.alterarNinjaPorId(id, ninjaModel);
+
+        if( ninja != null ){
+            return ResponseEntity.ok(ninja);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("O ninja de id "+id+" não existe!");
