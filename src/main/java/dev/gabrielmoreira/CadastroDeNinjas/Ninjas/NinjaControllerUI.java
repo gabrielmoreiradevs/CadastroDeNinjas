@@ -64,9 +64,7 @@ public class NinjaControllerUI {
     @GetMapping("/listar/{id}")
     public String mostrarDetalhesDoNinja(@PathVariable Long id, Model model) {
         NinjaDTO ninja = ninjaService.mostrarTodosOsNinjasPorID(id);
-
         model.addAttribute("ninja", ninja);
-
         return "ninjas/detalhesNinja";
     }
 }
