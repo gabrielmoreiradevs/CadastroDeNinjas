@@ -11,7 +11,7 @@ import java.util.Optional;
 public class NinjaController {
 
     private final NinjaRepository ninjaRepository;
-    private NinjaService ninjaService;
+    private final NinjaService ninjaService;
 
     public NinjaController(NinjaService ninjaService, NinjaRepository ninjaRepository) {
         this.ninjaService = ninjaService;

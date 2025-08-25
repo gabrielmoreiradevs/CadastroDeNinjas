@@ -16,13 +16,11 @@ import java.util.List;
 @RequestMapping("/missoes")
 public class MissoesController {
 
-    private final NinjaRepository ninjaRepository;
     private final MissoesRepository missoesRepository;
-    private MissoesService missoesService;
+    private final MissoesService missoesService;
 
-    public MissoesController(MissoesService missoesService, NinjaRepository ninjaRepository, MissoesRepository missoesRepository) {
+    public MissoesController(MissoesService missoesService, MissoesRepository missoesRepository) {
         this.missoesService = missoesService;
-        this.ninjaRepository = ninjaRepository;
         this.missoesRepository = missoesRepository;
     }
 
@@ -34,7 +32,7 @@ public class MissoesController {
     @GetMapping("/listar/{id}")
     public ResponseEntity<MissoesDTO> listarMissoes(@PathVariable Long id){
 
-        if( ninjaRepository.existsById(id) ){
+        if( missoesRepository.existsById(id) ){
             return ResponseEntity.ok().body(missoesService.listarMissoesPorID(id));
         }
         return ResponseEntity.notFound().build();
